@@ -4,7 +4,7 @@
 $ git clone https://github.com/wcrichter/persons-api.git
 $ cd persons-api
 $ npm install
-$ node start
+$ npm start
 ```
 
 ## Endpoints
