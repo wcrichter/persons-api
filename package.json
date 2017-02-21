@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.1",
+    "pouchdb-http": "^6.0.2",
     "ramda": "^0.23.0"
   }
 }
