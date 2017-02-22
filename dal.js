@@ -21,7 +21,7 @@ function addPerson(doc, cb) {
   })
 }
 
-//delete a persons
+//delete a person
 
 function deletePerson (id, cb) {
   db.get(id, function(err,doc) {
@@ -32,6 +32,18 @@ function deletePerson (id, cb) {
       cb(null, removedDoc)
     })
   })
+}
+
+//update a person
+function updatePerson (doc, cb) {
+  // db.get(id, function(err, doc) {
+  //   if (err) return cb(err)
+
+    db.put(doc, function(err, updatedDoc) {
+      if (err) return cb(err)
+      cb(null, updatedDoc)
+    })
+  // })
 }
 
 
@@ -47,7 +59,8 @@ function deletePerson (id, cb) {
 const dal = {
   getPerson: getPerson,
   addPerson: addPerson,
-  deletePerson: deletePerson
+  deletePerson: deletePerson,
+  updatePerson: updatePerson
 }
 
 module.exports = dal

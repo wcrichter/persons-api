@@ -7,7 +7,10 @@ $ npm install
 $ npm start
 ```
 
+
+
 ## Endpoints
+
 
 ### `GET /persons/:id`
 
@@ -43,6 +46,98 @@ Example Response (Error):
   "name": "not_found",
   "status": 404,
   "message": "missing"
+}
+```
+
+
+### `POST /persons`
+
+Adds a JSON object representing a person with specified keys and values.
+
+#### Parameters
+
+- `doc` - The document of the person to add to the data.
+
+#### Example Call
+
+```
+POST /persons
+```
+
+Body:
+```
+{
+  "_id": "person_frank_costanza_frank@serenitynow.com",
+  "firstName": "Frank",
+  "lastName": "Costanza",
+  "email": "frank@serenitynow.com",
+  "type": "person"
+}
+```
+
+Example Response (Success):
+```
+{
+  "ok": true,
+  "id": "person_frank_costanza_frank@serenitynow.com",
+  "rev": "1-b052be6014e8625f93649d10c5d090e4"
+}
+```
+
+Example Response (Error):
+```
+{
+  "error": "conflict",
+  "reason": "Document update conflict.",
+  "name": "conflict",
+  "status": 409,
+  "message": "Document update conflict."
+}
+```
+
+
+### `DELETE /persons/:id`
+
+Delete a JSON object representing a person with a given id.
+
+#### Parameters
+
+- `id` - The id of the person to delete from the database.
+
+#### Example Call
+
+```
+DELETE /persons/person_frank_costanza_frank@serenitynow.com
+```
+
+Body:
+```
+{
+  "_id": "person_frank_costanza_frank@serenitynow.com",
+  "firstName": "Frank",
+  "lastName": "Costanza",
+  "email": "frank@serenitynow.com",
+  "type": "person"
+}
+```
+
+Example Response (Success):
+```
+{
+  "ok": true,
+  "id": "person_frank_costanza_frank@serenitynow.com",
+  "rev": "2-34783470fb39a24b6581849403caa7b5"
+}
+```
+
+Example Response (Error):
+```
+{
+  "name": "not_found",
+  "status": 404,
+  "message": "deleted",
+  "reason": "deleted",
+  "error": "not_found"
 }
 ```
 
@@ -91,47 +186,50 @@ Example Response (Error):
 }
 ```
 
-### `DELETE /persons/:id`
 
-Delete a JSON object representing a person with a given id.
+### `POST /persons/:id`
+
+Update a JSON object (representing a person) with a new JSON object with a given id.
 
 #### Parameters
 
-- `id` - The id of the person to delete from the database.
+- `id` - The id of the person to update from the database.
 
 #### Example Call
 
 ```
-DELETE /persons/person_frank_costanza_frank@serenitynow.com
+DELETE /persons/person_elaine_bennis_elaine@petermancatalog.com
 ```
 
 Body:
 ```
 {
-  "_id": "person_frank_costanza_frank@serenitynow.com",
-  "firstName": "Frank",
-  "lastName": "Costanza",
-  "email": "frank@serenitynow.com",
-  "type": "person"
+	"_id": "person_elaine_bennis_elaine@petermancatalog.com",
+	"_rev": "3-ab7eef2f9976fd1a6c37743f6ac3fa59",
+	"firstName": "Elaine",
+	"lastName": "Bennis",
+	"email": "elaine@gmail.com",
+	"type": "person"
 }
 ```
+*This new object body updates the email value from elain@petermancatalog.com to elain@gmail.com*
 
 Example Response (Success):
 ```
 {
   "ok": true,
-  "id": "person_frank_costanza_frank@serenitynow.com",
-  "rev": "2-34783470fb39a24b6581849403caa7b5"
+  "id": "person_elaine_bennis_elaine@petermancatalog.com",
+  "rev": "4-918291f0b62f9941a55c1178ddb44d09"
 }
 ```
 
 Example Response (Error):
 ```
 {
-  "name": "not_found",
-  "status": 404,
-  "message": "deleted",
-  "reason": "deleted",
-  "error": "not_found"
+  "name": "conflict",
+  "status": 409,
+  "message": "Document update conflict.",
+  "reason": "Document update conflict.",
+  "error": "conflict"
 }
 ```

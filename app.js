@@ -5,7 +5,8 @@ const port = process.env.PORT || 4000
 const {
     getPerson,
     addPerson,
-    deletePerson
+    deletePerson,
+    updatePerson
 } = require('./dal.js')
 const bodyParser = require('body-parser')
 const HTTPError = require('node-http-error')
@@ -32,6 +33,13 @@ app.delete('/persons/:id', function(req, res, next) {
         if (err) return next(new HTTPError(err.status, err.message, err))
         res.status(200).send(person)
     })
+})
+
+app.put('/persons/:id', function(req, res, next) {
+  updatePerson(req.body, function(err, updatedResonse) {
+    if (err) return next(new HTTPError(err.status, err.message, err))
+    res.status(200).send(updatedResonse)
+  })
 })
 
 //Error Handler
