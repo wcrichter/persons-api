@@ -8,7 +8,6 @@ $ npm start
 ```
 
 
-
 ## Endpoints
 
 
@@ -212,7 +211,7 @@ Body:
 	"type": "person"
 }
 ```
-*This new object body updates the email value from elain@petermancatalog.com to elain@gmail.com*
+*This new object body updates the email value from elaine@petermancatalog.com to elaine@gmail.com*
 
 Example Response (Success):
 ```
