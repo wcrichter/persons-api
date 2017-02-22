@@ -7,6 +7,16 @@ $ npm install
 $ npm start
 ```
 
+---
+
+## Supported HTTP Requests
+
+* ```GET```
+* ```POST```
+* ```DELETE```
+* ```PUT```
+
+---
 
 ## Endpoints
 
@@ -47,6 +57,7 @@ Example Response (Error):
   "message": "missing"
 }
 ```
+
 
 
 ### `POST /persons`
@@ -93,6 +104,7 @@ Example Response (Error):
   "message": "Document update conflict."
 }
 ```
+
 
 
 ### `DELETE /persons/:id`
@@ -140,6 +152,8 @@ Example Response (Error):
 }
 ```
 
+
+
 ### `POST /persons`
 
 Adds a JSON object representing a person with specified keys and values.
@@ -184,6 +198,7 @@ Example Response (Error):
   "message": "Document update conflict."
 }
 ```
+
 
 
 ### `POST /persons/:id`
@@ -231,4 +246,64 @@ Example Response (Error):
   "reason": "Document update conflict.",
   "error": "conflict"
 }
+```
+
+
+    
+### `GET /persons`
+
+Returns a JSON object containing all 'person' documents from the database.
+
+#### Parameters
+
+- `id` - The id of the person to update from the database.
+
+#### Example Call
+
+```
+GET /persons
+```
+
+Example Response (Success):
+```
+[
+  {
+    "_id": "person_bob_saccamano_bob@kramerssketchyfriend.com",
+    "_rev": "1-3b4b0fa77d27c252f20fb36dc9ecae5c",
+    "firstName": "Bob",
+    "lastName": "Saccamano",
+    "email": "bob@kramerssketchyfriend.com",
+    "type": "person"
+  },
+  {
+    "_id": "person_chris_richter_wcrichter@gmail.com",
+    "_rev": "5-56a069d8a3d0a6f36ebe09641a377b0a",
+    "firstName": "Chris",
+    "lastName": "Richter",
+    "email": "wcrichter@gmail.com",
+    "type": "person"
+  },
+  {
+    "_id": "person_david_puddy_david@greasemonkey.com",
+    "_rev": "3-3a94a40198e67b8d67909e6aa156ec70",
+    "firstName": "David",
+    "lastName": "Puddy",
+    "email": "david@greasemonkey.com",
+    "type": "person"
+  },
+  {
+    "_id": "person_elaine_bennis_elaine@petermancatalog.com",
+    "_rev": "4-918291f0b62f9941a55c1178ddb44d09",
+    "firstName": "Elaine",
+    "lastName": "Bennis",
+    "email": "elaine@gmail.com",
+    "type": "person"
+  },
+
+]
+```
+
+Example Response (Error):
+```
+Cannot GET /people
 ```

@@ -6,11 +6,11 @@ const {
     getPerson,
     addPerson,
     deletePerson,
-    updatePerson
+    updatePerson,
+    getPersons
 } = require('./dal.js')
 const bodyParser = require('body-parser')
 const HTTPError = require('node-http-error')
-
 
 app.use(bodyParser.json())
 
@@ -39,6 +39,13 @@ app.put('/persons/:id', function(req, res, next) {
   updatePerson(req.body, function(err, updatedResonse) {
     if (err) return next(new HTTPError(err.status, err.message, err))
     res.status(200).send(updatedResonse)
+  })
+})
+
+app.get('/persons', function(req, res, next) {
+  getPersons(function(err, dalResponse) {
+    if (err) return next(new HTTPError(err.status, err.message, err))
+    res.status(200).send(dalResponse)
   })
 })
 
