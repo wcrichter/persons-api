@@ -1,15 +1,46 @@
 // console.log("Welcome to the persons-api")
 const express = require('express')
-const {getPerson} = require('./dal.js')
 const app = express()
+const port = process.env.PORT || 4000
+const {
+    getPerson,
+    addPerson,
+    deletePerson
+} = require('./dal.js')
+const bodyParser = require('body-parser')
+const HTTPError = require('node-http-error')
 
-app.get("/persons/:id", function(req,res) {
-  getPerson(req.params.id, function(err, doc){
-    if (err) res.send(err)
-    res.send(doc)
-  })
+
+app.use(bodyParser.json())
+
+app.post('/persons', function(req, res, next) {
+    addPerson(req.body, function(err, dalResponse) {
+        if (err) return next(new HTTPError(err.status, err.message, err))
+        res.status(201).send(dalResponse)
+    })
 })
 
-app.listen(8080, function() {
-  console.log('Example app listening on port 8080!')
+app.get("/persons/:id", function(req, res, next) {
+    getPerson(req.params.id, function(err, dalResponse) {
+        if (err) return next(new HTTPError(err.status, err.message, err))
+        res.status(200).send(dalResponse)
+    })
+})
+
+app.delete('/persons/:id', function(req, res, next) {
+    deletePerson(req.params.id, function(err, person) {
+        if (err) return next(new HTTPError(err.status, err.message, err))
+        res.status(200).send(person)
+    })
+})
+
+//Error Handler
+app.use(function(err, req, res, next) {
+    console.log(req.method, " ", req.path, " err: ", err)
+    res.status(err.status || 500)
+    res.send(err)
+})
+
+app.listen(port, function() {
+    console.log('persons api started on: ', port)
 })
