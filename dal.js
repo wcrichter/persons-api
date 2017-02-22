@@ -65,14 +65,28 @@ function updatePerson(doc, cb) {
 }
 
 //get all persons
-function getPersons(cb) {
+function getPersons(limit, cb) {
   db.allDocs({include_docs: true,
         start_key: "person_",
-        end_key: "person_\uffff"}, function(err, retrievedPersons) {
+        end_key: "person_\uffff",
+        limit: limit}, function(err, retrievedPersons) {
       if (err) return cb(err)
       cb(null, map(x => x.doc , retrievedPersons.rows))
   })
 }
+
+//ADDRESSES
+
+function getAddresses(cb) {
+    db.allDocs({include_docs: true,
+          start_key: "address_",
+          end_key: "address_\uffff"}, function(err, retrievedAddresses) {
+        if (err) return cb(err)
+        cb(null, retrievedAddresses.rows)
+    })
+}
+
+
 
 //helpers
 
@@ -93,7 +107,8 @@ const dal = {
     addPerson: addPerson,
     deletePerson: deletePerson,
     updatePerson: updatePerson,
-    getPersons: getPersons
+    getPersons: getPersons,
+    getAddresses: getAddresses
 }
 
 module.exports = dal

@@ -7,16 +7,12 @@ $ npm install
 $ npm start
 ```
 
----
-
 ## Supported HTTP Requests
 
 * ```GET```
 * ```POST```
 * ```DELETE```
 * ```PUT```
-
----
 
 ## Endpoints
 
@@ -57,8 +53,6 @@ Example Response (Error):
   "message": "missing"
 }
 ```
-
-
 
 ### `POST /persons`
 
@@ -105,8 +99,6 @@ Example Response (Error):
 }
 ```
 
-
-
 ### `DELETE /persons/:id`
 
 Delete a JSON object representing a person with a given id.
@@ -151,8 +143,6 @@ Example Response (Error):
   "error": "not_found"
 }
 ```
-
-
 
 ### `POST /persons`
 
@@ -249,7 +239,7 @@ Example Response (Error):
 ```
 
 
-    
+
 ### `GET /persons`
 
 Returns a JSON object containing all 'person' documents from the database.
