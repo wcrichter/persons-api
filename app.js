@@ -3,14 +3,16 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 4000
 const {
+    getPersons,
     getPerson,
     addPerson,
-    deletePerson,
     updatePerson,
-    getPersons,
+    deletePerson,
     getAddresses,
     getAddress,
-    addAddress
+    addAddress,
+    updateAddress,
+    deleteAddress
 } = require('./dal.js')
 const bodyParser = require('body-parser')
 const HTTPError = require('node-http-error')
@@ -82,6 +84,24 @@ app.post('/addresses', function(req, res, next) {
     res.status(201).send(newAddress)
   })
 })
+
+app.put('/addresses/:id', function(req, res, next) {
+  updateAddress(req.body, function(err, updatedAddress) {
+    if (err) return next(new HTTPError(err.status, err.message, err))
+    res.status(200).send(updatedAddress)
+  })
+})
+
+app.delete('/addresses/:id', function(req, res, next) {
+  deleteAddress(req.params.id, function(err, dalResponse) {
+    if (err) return next(new HTTPError(err.status, err.message, err))
+    res.status(200).send(dalResponse)
+  })
+})
+
+
+
+
 
 
 

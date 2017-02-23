@@ -54,14 +54,10 @@ function deletePerson(id, cb) {
 
 //update a person
 function updatePerson(doc, cb) {
-    // db.get(id, function(err, doc) {
-    //   if (err) return cb(err)
-
     db.put(doc, function(err, updatedDoc) {
         if (err) return cb(err)
         cb(null, updatedDoc)
     })
-    // })
 }
 
 //get all persons
@@ -114,6 +110,24 @@ function addAddress(doc, cb) {
     }
 }
 
+function updateAddress(doc, cb) {
+    db.put(doc, function(err, updatedDoc) {
+        if (err) return cb(err)
+        cb(null, updatedDoc)
+    })
+}
+
+function deleteAddress(id, cb) {
+  db.get(id, function(err, doc) {
+    if (err) return cb(err)
+
+      db.remove(doc, function(err, deletedDoc) {
+        if (err) return cb(err)
+        cb(null, deletedDoc)
+      })
+
+  })
+}
 
 
 
@@ -149,7 +163,9 @@ const dal = {
     getPersons: getPersons,
     getAddresses: getAddresses,
     getAddress: getAddress,
-    addAddress: addAddress
+    addAddress: addAddress,
+    updateAddress: updateAddress,
+    deleteAddress: deleteAddress
 }
 
 module.exports = dal
