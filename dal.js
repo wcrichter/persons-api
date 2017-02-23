@@ -66,34 +66,53 @@ function updatePerson(doc, cb) {
 
 //get all persons
 function getPersons(limit, cb) {
-  db.allDocs({include_docs: true,
+    db.allDocs({
+        include_docs: true,
         start_key: "person_",
         end_key: "person_\uffff",
-        limit: limit}, function(err, retrievedPersons) {
-      if (err) return cb(err)
-      cb(null, map(x => x.doc , retrievedPersons.rows))
-  })
+        limit: limit
+    }, function(err, retrievedPersons) {
+        if (err) return cb(err)
+        cb(null, map(x => x.doc, retrievedPersons.rows))
+    })
 }
 
 //ADDRESSES
 
 function getAddresses(cb) {
-    db.allDocs({include_docs: true,
-          start_key: "address_",
-          end_key: "address_\uffff"}, function(err, retrievedAddresses) {
+    db.allDocs({
+        include_docs: true,
+        start_key: "address_",
+        end_key: "address_\uffff"
+    }, function(err, retrievedAddresses) {
         if (err) return cb(err)
         cb(null, retrievedAddresses.rows)
     })
 }
 
-function getAddress(id, cb){
-  db.get(id, function(err, doc) {
-    if (err) return cb(err)
-    cb (null, doc)
-  })
+function getAddress(id, cb) {
+    db.get(id, function(err, doc) {
+        if (err) return cb(err)
+        cb(null, doc)
+    })
 }
 
-
+function addAddress(doc, cb) {
+    if (checkAddressRequiredValues(doc)) {
+        db.put(doc, function(err, doc) {
+            if (err) return cb(err)
+            cb(null, doc)
+        })
+    } else {
+        return cb({
+            "name": "bad request",
+            "status": 400,
+            "message": "Adding an address requires a street, city, state, and zip.",
+            "reason": "Bad Request",
+            "error": "bad_request"
+        })
+    }
+}
 
 
 
@@ -117,6 +136,11 @@ function checkPersonRequiredValues(doc) {
     return prop('firstName', doc) && prop('lastName', doc) && prop('email', doc)
 }
 
+
+function checkAddressRequiredValues(doc) {
+    return prop('street', doc) && prop('city', doc) && prop('state', doc) && prop('zip', doc)
+}
+
 const dal = {
     getPerson: getPerson,
     addPerson: addPerson,
@@ -124,7 +148,8 @@ const dal = {
     updatePerson: updatePerson,
     getPersons: getPersons,
     getAddresses: getAddresses,
-    getAddress: getAddress
+    getAddress: getAddress,
+    addAddress: addAddress
 }
 
 module.exports = dal

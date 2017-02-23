@@ -9,7 +9,8 @@ const {
     updatePerson,
     getPersons,
     getAddresses,
-    getAddress
+    getAddress,
+    addAddress
 } = require('./dal.js')
 const bodyParser = require('body-parser')
 const HTTPError = require('node-http-error')
@@ -68,10 +69,17 @@ app.get('/addresses', function(req, res, next) {
   })
 })
 
-app.get('/addresses/:id', function (req, res, next) {
-  getAddress(req.params.id, function (err, returnedDoc) {
+app.get('/addresses/:id', function(req, res, next) {
+  getAddress(req.params.id, function(err, returnedDoc) {
     if(err) return next(new HTTPError(err.status, err.message, err))
     res.status(200).send(returnedDoc)
+  })
+})
+
+app.post('/addresses', function(req, res, next) {
+  addAddress(req.body, function(err, newAddress) {
+    if (err) return next(new HTTPError(err.status, err.message, err))
+    res.status(201).send(newAddress)
   })
 })
 
