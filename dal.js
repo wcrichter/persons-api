@@ -86,6 +86,21 @@ function getAddresses(cb) {
     })
 }
 
+function getAddress(id, cb){
+  db.get(id, function(err, doc) {
+    if (err) return cb(err)
+    cb (null, doc)
+  })
+}
+
+
+
+
+
+
+
+
+
 
 
 //helpers
@@ -108,7 +123,8 @@ const dal = {
     deletePerson: deletePerson,
     updatePerson: updatePerson,
     getPersons: getPersons,
-    getAddresses: getAddresses
+    getAddresses: getAddresses,
+    getAddress: getAddress
 }
 
 module.exports = dal

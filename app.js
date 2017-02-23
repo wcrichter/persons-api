@@ -8,7 +8,8 @@ const {
     deletePerson,
     updatePerson,
     getPersons,
-    getAddresses
+    getAddresses,
+    getAddress
 } = require('./dal.js')
 const bodyParser = require('body-parser')
 const HTTPError = require('node-http-error')
@@ -53,12 +54,51 @@ app.get('/persons', function(req, res, next) {
 })
 
 //ADDRESSES
+
+// `GET /addresses` - lists a collection of addresses
+// `GET /addresses/:id` - returns a single address from the collection of addresses
+// `POST /addresses` - adds an address to the collection of addresses
+// `PUT /addresses/:id` - updates an address in the collection of addresses
+// `DELETE /addresses/:id` - deletes an address from the collection of addresses
+
 app.get('/addresses', function(req, res, next) {
   getAddresses(function(err, dalResponse) {
     if (err) return next(new HTTPError(err.status, err.message, err))
     res.status(200).send(dalResponse)
   })
 })
+
+app.get('/addresses/:id', function (req, res, next) {
+  getAddress(req.params.id, function (err, returnedDoc) {
+    if(err) return next(new HTTPError(err.status, err.message, err))
+    res.status(200).send(returnedDoc)
+  })
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Error Handler
 app.use(function(err, req, res, next) {
