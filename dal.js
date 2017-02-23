@@ -8,59 +8,10 @@ const {
 
 const db = new PouchDB('http://localhost:3000/test')
 
-// create and export a function that retrieves a person from couch
 
-function getPerson(id, cb) {
-    db.get(id, function(err, doc) {
-        if (err) return cb(err)
-        cb(null, doc)
-    })
-}
+//PEOPLE
 
-//add a person
-
-function addPerson(doc, cb) {
-    if (checkPersonRequiredValues(doc)) {
-
-        db.put(prepNewPerson(doc), function(err, doc) {
-            if (err) return cb(err)
-            cb(null, doc)
-        })
-
-    } else {
-        return cb({
-            "name": "bad request",
-            "status": 400,
-            "message": "Adding a person requires a firstName, lastName, and email.",
-            "reason": "Bad Request",
-            "error": "bad_request"
-
-        })
-    }
-}
-
-//delete a person
-
-function deletePerson(id, cb) {
-    db.get(id, function(err, doc) {
-        if (err) return cb(err)
-
-        db.remove(doc, function(err, removedDoc) {
-            if (err) return cb(err)
-            cb(null, removedDoc)
-        })
-    })
-}
-
-//update a person
-function updatePerson(doc, cb) {
-    db.put(doc, function(err, updatedDoc) {
-        if (err) return cb(err)
-        cb(null, updatedDoc)
-    })
-}
-
-//get all persons
+//get ALL persons from database
 function getPersons(limit, cb) {
     db.allDocs({
         include_docs: true,
@@ -73,8 +24,55 @@ function getPersons(limit, cb) {
     })
 }
 
+// get a person from database
+function getPerson(id, cb) {
+    db.get(id, function(err, doc) {
+        if (err) return cb(err)
+        cb(null, doc)
+    })
+}
+
+//add a person to database
+function addPerson(doc, cb) {
+    if (checkPersonRequiredValues(doc)) {
+        db.put(prepNewPerson(doc), function(err, doc) {
+            if (err) return cb(err)
+            cb(null, doc)
+        })
+    } else {
+        return cb({
+            "name": "bad request",
+            "status": 400,
+            "message": "Adding a person requires a firstName, lastName, and email.",
+            "reason": "Bad Request",
+            "error": "bad_request"
+        })
+    }
+}
+
+//update a person in database
+function updatePerson(doc, cb) {
+    db.put(doc, function(err, updatedDoc) {
+        if (err) return cb(err)
+        cb(null, updatedDoc)
+    })
+}
+
+//delete a person from database
+function deletePerson(id, cb) {
+    db.get(id, function(err, doc) {
+        if (err) return cb(err)
+        db.remove(doc, function(err, removedDoc) {
+            if (err) return cb(err)
+            cb(null, removedDoc)
+        })
+    })
+}
+
+
 //ADDRESSES
 
+//get all addresses from database
 function getAddresses(cb) {
     db.allDocs({
         include_docs: true,
@@ -86,6 +84,7 @@ function getAddresses(cb) {
     })
 }
 
+//get an address from database
 function getAddress(id, cb) {
     db.get(id, function(err, doc) {
         if (err) return cb(err)
@@ -93,6 +92,7 @@ function getAddress(id, cb) {
     })
 }
 
+//add an address to database
 function addAddress(doc, cb) {
     if (checkAddressRequiredValues(doc)) {
         db.put(doc, function(err, doc) {
@@ -110,6 +110,7 @@ function addAddress(doc, cb) {
     }
 }
 
+//update an address in database
 function updateAddress(doc, cb) {
     db.put(doc, function(err, updatedDoc) {
         if (err) return cb(err)
@@ -117,23 +118,16 @@ function updateAddress(doc, cb) {
     })
 }
 
+//delete an address from database
 function deleteAddress(id, cb) {
-  db.get(id, function(err, doc) {
-    if (err) return cb(err)
-
-      db.remove(doc, function(err, deletedDoc) {
+    db.get(id, function(err, doc) {
         if (err) return cb(err)
-        cb(null, deletedDoc)
-      })
-
-  })
+        db.remove(doc, function(err, deletedDoc) {
+            if (err) return cb(err)
+            cb(null, deletedDoc)
+        })
+    })
 }
-
-
-
-
-
-
 
 
 //helpers
@@ -145,15 +139,16 @@ function prepNewPerson(doc) {
     return doc
 }
 
-//check for values
+//check for necessary person values
 function checkPersonRequiredValues(doc) {
     return prop('firstName', doc) && prop('lastName', doc) && prop('email', doc)
 }
 
-
+//check for necessary address values
 function checkAddressRequiredValues(doc) {
     return prop('street', doc) && prop('city', doc) && prop('state', doc) && prop('zip', doc)
 }
+
 
 const dal = {
     getPerson: getPerson,
